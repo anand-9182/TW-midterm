@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .p {
+            margin: 30px;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .Image {
+            width: 220px;
+            height: 240px;
+        }
+
+        .pcard {
+            padding: 20px;
+            border: 1px solid grey;
+            border-radius: 20px;
+            box-shadow: 2px 5px 12px rgb(148, 58, 58);
+            display: flex;
+            background-color: white;
+            flex-direction: column;
+        }
+
+        .pdis {
+            width: 80vw;
+            background-color: white;
+            display: none;
+            border-radius: 10px;
+            position: fixed;
+            top: 20%;
+            right: 10%;
+            left: 10%;
+            bottom: 20%;
+        }
+
+        .active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="p" id="list"></div>
+        <div class="pdis" id="dis">
+            <h3></h3>
+            <button onclick="close_p()">X</button>
+            <p></p>
+            <img src="" alt="">
+        </div>
+
+        <script>
+            var list = document.getElementById("list");
+            var dis = document.getElementById("dis");
+            var display_heading = document.querySelector("#display h3")
+            var display_para = document.querySelector("#display p")
+            var display_imgg = document.querySelector("#display img")
+            function getproducts() {
+                fetch("https://dummyjson.com/products").then(res => res.json()).then(data => imagegen(data.products));
+            }
+            getproducts();
+            function imagegen(products) {
+                list.innerHTML = ""
+                products.forEach(product => {
+                    let card = document.createElement("div");
+                    card.classList.add('pcard')
+                    let productsnames = document.createElement("h3");
+                    productsnames.innerText = product.title;
+                    card.appendChild(productsnames);
+
+                    let imgs = document.createElement("img");
+                    imgs.src = product.thumbnail;
+                    imgs.classList.add('Image');
+
+                    card.addEventListener('click', () => {
+                        
+                        dis.classList.add('active')
+                        display_heading.innerText = product.title;
+                        display_para.innerText = product.description;
+                        display_imgg.src = product.thumbnail;
+                    })
+                    function close_p() {
+                        pdisplay.classList.remove('active')
+                    }
+
+                    card.appendChild(imgs);
+                    list.appendChild(card);
+
+                });
+            }
+
+        </script>
+</body>
+
+</html>
